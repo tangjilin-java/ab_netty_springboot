@@ -112,6 +112,11 @@ public class FileUtils {
 		}
 	}
 
+	/**
+	 * 将普通文件转换成Multipart
+	 * @param filePath
+	 * @return
+	 */
 	public static MultipartFile fileToMultipart(String filePath) {
 		try {
 			// File转换成MutipartFile
@@ -132,6 +137,13 @@ public class FileUtils {
 		// WebFileUtils.createImg("http://122.152.205.72:88/group1/M00/00/01/CpoxxFr7oIaAZ0rOAAC0d3GKDio580.png");
 	}
 
+	/**
+	 * 将base64 转换成文件对象
+	 * @param filePath
+	 * @param base64Data
+	 * @return
+	 * @throws Exception
+	 */
 	public static boolean base64ToFile(String filePath, String base64Data)  throws Exception {
 		String dataPrix = "";
         String data = "";

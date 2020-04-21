@@ -21,6 +21,9 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+/**
+ * 二维码
+ */
 @Component
 public class QRCodeUtils {
 	

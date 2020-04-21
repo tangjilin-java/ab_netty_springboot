@@ -44,7 +44,13 @@ public class FastDFSClient {
 
 		return storePath.getPath();
 	}
-	
+
+	/**
+	 * 二维码上传
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	public String uploadQRCode(MultipartFile file) throws IOException {
 		StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
 				"png", null);
@@ -58,7 +64,13 @@ public class FastDFSClient {
 		
 		return storePath.getPath();
 	}
-	
+
+	/**
+	 * 上传
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	public String uploadBase64(MultipartFile file) throws IOException {
 		StorePath storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(),
 				"png", null);

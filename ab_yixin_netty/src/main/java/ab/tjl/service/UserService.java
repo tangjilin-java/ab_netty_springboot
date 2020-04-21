@@ -1,6 +1,10 @@
 package ab.tjl.service;
 
 import ab.tjl.pojo.Users;
+import ab.tjl.pojo.vo.FriendRequestVO;
+import ab.tjl.pojo.vo.MyFriendsVO;
+
+import java.util.List;
 
 /**
  * @Author:TangJiLin
@@ -31,4 +35,60 @@ public interface UserService {
      * @return
      */
     Users saveUser(Users user);
+
+    /**
+     * 修改用户记录
+     * @param user
+     */
+    Users updateUserInfo(Users user);
+
+    /**
+     * 搜索朋友的前置条件
+     * @param myUserId
+     * @param friendUsername
+     * @return
+     */
+    Integer preconditionSearchFriends(String myUserId,String friendUsername);
+
+    /**
+     * 通过用户名查找用户
+     * @param username
+     * @return
+     */
+    Users queryUserInfoByUsername(String username);
+
+    /**
+     * 发送添加朋友请求
+     * @param myUserId
+     * @param friendUsername
+     */
+    void sendFriendRequest(String myUserId, String friendUsername);
+
+    /**
+     * 查找添加好友请求列表
+     * @param acceptUserId
+     * @return
+     */
+    List<FriendRequestVO> queryFriendRequestList(String acceptUserId);
+
+    /**
+     * 删除好友请求的数据库表记录
+     * @param sendUserId
+     * @param acceptUserId
+     */
+    void deleteFriendRequest(String sendUserId, String acceptUserId);
+
+    /**
+     * 如果是通过好友请求，则互相增加好友记录到数据库对应的表
+     * @param sendUserId
+     * @param acceptUserId
+     */
+    void passFriendRequest(String sendUserId, String acceptUserId);
+
+    /**
+     * 查询好友列表
+     * @param acceptUserId
+     * @return
+     */
+    List<MyFriendsVO> queryMyFriends(String acceptUserId);
 }
