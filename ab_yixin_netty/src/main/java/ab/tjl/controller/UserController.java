@@ -243,9 +243,25 @@ public class UserController {
         }
 
         // 4. 数据库查询好友列表
-        List<MyFriendsVO> myFirends = userService.queryMyFriends(acceptUserId);
+        List<MyFriendsVO> myFriends = userService.queryMyFriends(acceptUserId);
 
-        return ABJSONResult.ok(myFirends);
+        return ABJSONResult.ok(myFriends);
     }
 
+    /**
+     * 查询我的好友列表
+     * @param userId
+     * @return
+     */
+    @PostMapping("/myFriends")
+    public ABJSONResult myFriends(String userId) {
+        // 0. userId 判断不能为空
+        if (StringUtils.isBlank(userId)) {
+            return ABJSONResult.errorMsg("");
+        }
+
+        // 1. 数据库查询好友列表
+        List<MyFriendsVO> myFriends = userService.queryMyFriends(userId);
+        return ABJSONResult.ok(myFriends);
+    }
 }

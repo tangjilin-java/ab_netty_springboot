@@ -1,6 +1,11 @@
 package ab.tjl.pojo.vo;
 
-
+/**
+ * @Author:TangJiLin
+ * @Description: 响应给前端的数据封装
+ * @Date: Created in 2020/4/22 16:45
+ * @Modified By:
+ */
 public class MyFriendsVO {
     private String friendUserId;
     private String friendUsername;

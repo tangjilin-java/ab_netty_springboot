@@ -1,11 +1,10 @@
 package ab.tjl.service.impl;
 
 import ab.tjl.enums.MsgActionEnum;
+import ab.tjl.enums.MsgSignFlagEnum;
 import ab.tjl.enums.SearchFriendsStatusEnum;
-import ab.tjl.mapper.FriendsRequestMapper;
-import ab.tjl.mapper.MyFriendsMapper;
-import ab.tjl.mapper.UsersMapper;
-import ab.tjl.mapper.UsersMapperCustom;
+import ab.tjl.mapper.*;
+import ab.tjl.netty.ChatMsg;
 import ab.tjl.pojo.FriendsRequest;
 import ab.tjl.pojo.MyFriends;
 import ab.tjl.pojo.Users;
@@ -53,6 +52,8 @@ public class UserServiceImpl implements UserService{
     private FriendsRequestMapper friendsRequestMapper;
     @Autowired
     private UsersMapperCustom userMapperCustom;
+    @Autowired
+    private ChatMsgMapper chatMsgMapper;
 
     /**
      * 判断用户名知否存在
@@ -206,7 +207,7 @@ public class UserServiceImpl implements UserService{
      * @param acceptUserId
      * @return
      */
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<FriendRequestVO> queryFriendRequestList(String acceptUserId) {
         return userMapperCustom.queryFriendRequestList(acceptUserId);
@@ -260,8 +261,60 @@ public class UserServiceImpl implements UserService{
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<MyFriendsVO> queryMyFriends(String userId) {
-        List<MyFriendsVO> myFirends = userMapperCustom.queryMyFriends(userId);
-        return myFirends;
+        List<MyFriendsVO> myFriends = userMapperCustom.queryMyFriends(userId);
+        System.out.println(myFriends.get(0).getFriendNickname());
+        return myFriends;
+    }
+
+    /**
+     * 保存消息
+     * @param chatMsg
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public String saveMsg(ChatMsg chatMsg) {
+        ab.tjl.pojo.ChatMsg msgDB = new ab.tjl.pojo.ChatMsg();
+        String msgId = sid.nextShort();
+        msgDB.setId(msgId);
+        msgDB.setAcceptUserId(chatMsg.getReceiverId());
+        msgDB.setSendUserId(chatMsg.getSenderId());
+        msgDB.setCreateTime(new Date());
+        msgDB.setSignFlag(MsgSignFlagEnum.unsign.type);
+        msgDB.setMsg(chatMsg.getMsg());
+
+        chatMsgMapper.insert(msgDB);
+
+        return msgId;
+    }
+
+    /**
+     * 批量签收消息
+     * @param msgIdList
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void updateMsgSigned(List<String> msgIdList) {
+        userMapperCustom.batchUpdateMsgSigned(msgIdList);
+    }
+
+    /**
+     * 获取未签收消息列表
+     * @param acceptUserId
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<ab.tjl.pojo.ChatMsg> getUnReadMsgList(String acceptUserId) {
+
+        Example chatExample = new Example(ab.tjl.pojo.ChatMsg.class);
+        Example.Criteria chatCriteria = chatExample.createCriteria();
+        chatCriteria.andEqualTo("signFlag", 0);
+        chatCriteria.andEqualTo("acceptUserId", acceptUserId);
+
+        List<ab.tjl.pojo.ChatMsg> result = chatMsgMapper.selectByExample(chatExample);
+
+        return result;
     }
 
     /**
@@ -269,7 +322,8 @@ public class UserServiceImpl implements UserService{
      * @param sendUserId
      * @param acceptUserId
      */
-    private void saveFriends(String sendUserId,String  acceptUserId){
+    @Transactional(propagation = Propagation.REQUIRED)
+    void saveFriends(String sendUserId, String acceptUserId){
         MyFriends myFriends = new MyFriends();
         String recordId = sid.nextShort();
         myFriends.setId(recordId);

@@ -1,5 +1,6 @@
 package ab.tjl.service;
 
+import ab.tjl.netty.ChatMsg;
 import ab.tjl.pojo.Users;
 import ab.tjl.pojo.vo.FriendRequestVO;
 import ab.tjl.pojo.vo.MyFriendsVO;
@@ -91,4 +92,24 @@ public interface UserService {
      * @return
      */
     List<MyFriendsVO> queryMyFriends(String acceptUserId);
+
+    /**
+     * 保存消息
+     * @param chatMsg
+     * @return
+     */
+    String saveMsg(ChatMsg chatMsg);
+
+    /**
+     * 批量签收消息
+     * @param msgIdList
+     */
+    void updateMsgSigned(List<String> msgIdList);
+
+    /**
+     * 获取未签收消息列表
+     * @param acceptUserId
+     * @return
+     */
+    List<ab.tjl.pojo.ChatMsg> getUnReadMsgList(String acceptUserId);
 }

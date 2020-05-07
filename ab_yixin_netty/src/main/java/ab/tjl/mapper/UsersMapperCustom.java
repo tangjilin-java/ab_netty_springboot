@@ -22,7 +22,16 @@ public interface UsersMapperCustom extends MyMapper<Users> {
      */
     List<FriendRequestVO> queryFriendRequestList(String acceptUserId);
 
+    /**
+     * 查找我的好友列表
+     * @param userId
+     * @return
+     */
     List<MyFriendsVO> queryMyFriends(String userId);
 
+    /**
+     * 批量签收消息
+     * @param msgIdList
+     */
     void batchUpdateMsgSigned(List<String> msgIdList);
 }

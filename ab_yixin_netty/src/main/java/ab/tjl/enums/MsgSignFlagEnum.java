@@ -1,8 +1,10 @@
 package ab.tjl.enums;
 
 /**
- * 
+ * @Author:TangJiLin
  * @Description: 消息签收状态 枚举
+ * @Date: Created in 2020/5/7 20:34
+ * @Modified By:
  */
 public enum MsgSignFlagEnum {
 	
