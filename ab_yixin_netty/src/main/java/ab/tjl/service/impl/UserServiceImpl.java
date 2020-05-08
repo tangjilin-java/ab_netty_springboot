@@ -5,6 +5,8 @@ import ab.tjl.enums.MsgSignFlagEnum;
 import ab.tjl.enums.SearchFriendsStatusEnum;
 import ab.tjl.mapper.*;
 import ab.tjl.netty.ChatMsg;
+import ab.tjl.netty.DataContent;
+import ab.tjl.netty.UserChannelRel;
 import ab.tjl.pojo.FriendsRequest;
 import ab.tjl.pojo.MyFriends;
 import ab.tjl.pojo.Users;
@@ -15,6 +17,7 @@ import ab.tjl.utils.FastDFSClient;
 import ab.tjl.utils.FileUtils;
 import ab.tjl.utils.JsonUtils;
 import ab.tjl.utils.QRCodeUtils;
+import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,7 +244,7 @@ public class UserServiceImpl implements UserService{
         saveFriends(acceptUserId, sendUserId);
         deleteFriendRequest(sendUserId, acceptUserId);
 
-        /*Channel sendChannel = UserChannelRel.get(sendUserId);
+        Channel sendChannel = UserChannelRel.get(sendUserId);
         if (sendChannel != null) {
             // 使用websocket主动推送消息到请求发起者，更新他的通讯录列表为最新
             DataContent dataContent = new DataContent();
@@ -250,7 +253,7 @@ public class UserServiceImpl implements UserService{
             sendChannel.writeAndFlush(
                     new TextWebSocketFrame(
                             JsonUtils.objectToJson(dataContent)));
-        }*/
+        }
     }
 
     /**

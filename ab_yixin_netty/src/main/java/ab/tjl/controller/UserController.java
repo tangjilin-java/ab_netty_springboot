@@ -264,4 +264,22 @@ public class UserController {
         List<MyFriendsVO> myFriends = userService.queryMyFriends(userId);
         return ABJSONResult.ok(myFriends);
     }
+
+    /**
+     * 用户手机端获取未签收的消息列表
+     * @param acceptUserId
+     * @return
+     */
+    @PostMapping("/getUnReadMsgList")
+    public ABJSONResult getUnReadMsgList(String acceptUserId) {
+        // 0. userId 判断不能为空
+        if (StringUtils.isBlank(acceptUserId)) {
+            return ABJSONResult.errorMsg("");
+        }
+
+        // 查询列表
+        List<ab.tjl.pojo.ChatMsg> unreadMsgList = userService.getUnReadMsgList(acceptUserId);
+
+        return ABJSONResult.ok(unreadMsgList);
+    }
 }

@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     //用云记录和管理客户端所有的channel
-    private static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         // 获取客户端传输过来的消息
